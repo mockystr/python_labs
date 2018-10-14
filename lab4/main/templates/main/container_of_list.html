@@ -1,0 +1,57 @@
+{% load static %}
+{% if is_ajax_query %}
+    {% if products %}
+        {% for product in products %}
+            <div class="avito_product">
+                <div class="row">
+                    {#                <img src="" class="product_image" alt="">#}
+                    <div class="col-lg-3 col-md-3 col-sm-4 col-5">
+                        {% if product.image_url %}
+                            <img src="https:{{ product.image_url }}" title="{{ product.title }}" class="img-thumbnail"
+                                 alt="{{ product.title }}">
+                        {% else %}
+                            <img src="{% static "images/nf1.jpg" %}" alt="not found" title="{{ product.title }}"
+                                 class="img-thumbnail" style="max-width: 100%">
+                        {% endif %}
+                    </div>
+                    <div class="col-lg-9 col-md-9 col-sm-8 col-7">
+                        <a href="{{ product.url|slice:"21::" }}" id="product_url"
+                           class="product_title">{{ product.title }}</a>
+                        <div class="text-muted product_info">
+                            Price: {{ product.price }} ₽
+                            <br>
+                            {% if product.company and not product.company == "Компания" %}
+                                Company: {{ product.company }}
+                            {% else %}
+                                Company: not stated
+                            {% endif %}
+                            <br>
+                            {% if product.metro %}
+                                Metro: {{ product.metro }}
+                            {% else %}
+                                Metro: not stated
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+        {% endfor %}
+        <div class="text-center mt-5 mb-5">
+            <a href="{{ url_query }}">Watch all items on Avito</a>
+        </div>
+    {% endif %}
+{% else %}
+    <form action="/" method="get" id="find_product__form">
+        {% csrf_token %}
+        <div class="input-group mb-3 container__input" style="margin-top: 150px;">
+            <input type="text" id="product_text" class="form-control container__input-find" name="product"
+                   placeholder="Enter product name"
+                   aria-label="Enter product name" aria-describedby="button-addon2">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="submit" id="button-addon2">Find</button>
+            </div>
+        </div>
+    </form>
+    <div id="errors" class="text-danger"></div>
+{% endif %}

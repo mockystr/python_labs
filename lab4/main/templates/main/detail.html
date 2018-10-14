@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                <img src="{{ item.image_url }}" alt="asd" class="img-thumbnail" style="max-width: 100%">
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-12 col-12 item-info">
+                <h2>{{ item.title }}</h2>
+                <p class="text-muted">Price: {{ item.price }} ₽</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

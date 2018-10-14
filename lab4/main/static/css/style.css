@@ -1,0 +1,33 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container__input {
+    justify-content: center;
+}
+
+.container__input-find {
+    max-width: 600px;
+}
+
+.navbar-toggler {
+    padding: 2px 5px;
+}
+
+.item-info {
+    margin-top: 20px;
+}
+
+@media screen and (max-width: 768px) {
+    .row {
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    .item-info {
+        margin-top: 50px;
+        text-align: center;
+    }
+}
