@@ -1,0 +1,61 @@
+import MySQLdb
+
+class Connection:
+    def __init__(self, user, password, db, host="localhost"):
+        self.user = user
+        self.host = host
+        self.password = password
+        self.db = db
+        self._connection = None
+
+    @property
+    def connection(self):
+        return self._connection
+
+    def __enter__(self):
+        self.connect()
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        self.disconnect()
+
+    def connect(self):
+        if not self._connection:
+            self._connection = MySQLdb.connect(
+                host=self.host,
+                user=self.user,
+                passwd=self.password,
+                db=self.db
+            )
+
+    def disconnect(self):
+        if self._connection:
+            self._connection.close()
+
+class Generator:
+    def __init__(self, db_connection, name, length, description):
+        self.db_connection = db_connection.connection
+        self.name = name
+        self.length = length
+        self.description = description
+        self.cursor = db_connection.cursor()
+
+    def save(self):
+        c = self.db_connection.cursor()
+        c.execute("INSERT INTO generator (name, length, description) VALUES (%s,%s,%s):", (self.name, self.length, self.description))
+
+
+
+con = Connection("dbuser", "123", "first_db")
+
+with con:
+    generator = Generator(con, "first", 123, "chetko")
+    generator.save()
+    generator = Generator(con, "second", 228, "ne ochen chetko")
+    generator.save()
+    gen_cursor = generator.cursor
+    gen_cursor.execute("SELECT * from generator")
+
+    for c in gen_cursor.fetchall():
+        print(c)
+
+    generator.close()
