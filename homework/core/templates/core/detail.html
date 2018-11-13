@@ -32,11 +32,16 @@
                     <h3>Пока еще никто не откликнулся на вашу заявку</h3>
                 {% else %}
                     {% if request.user.is_authenticated %}
-                        <div class="enroll text-center mt-4">
-                            <form action="{% url 'core:add_user_to_service' %}">
-                                <button type="submit" class="btn btn-outline-success">Откликнуться!</button>
-                            </form>
-                        </div>
+                        {% if is_in_list %}
+                            <p class="text-center mt-4">Вы уже отправляли заявку!</p>
+                        {% else %}
+                            <div class="enroll text-center mt-4">
+                                <form action="." method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-outline-success">Откликнуться!</button>
+                                </form>
+                            </div>
+                        {% endif %}
                     {% else %}
                         <p class="text-center mt-4">Авторизируйтесь на сайте, чтобы оставить заявку на услугу</p>
                     {% endif %}

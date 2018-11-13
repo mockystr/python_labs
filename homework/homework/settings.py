@@ -126,6 +126,7 @@ STATIC_URL = '/static/'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
+LOGIN_URL = reverse_lazy('account:login')
 LOGIN_REDIRECT_URL = reverse_lazy('core:list')
 LOGOUT_REDIRECT_URL = reverse_lazy('core:list')
 # LOGOUT_REDIRECT_URL = request.META.get('HTTP_REFERER')

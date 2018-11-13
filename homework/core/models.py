@@ -18,7 +18,9 @@ class Service(models.Model):
     bids = models.ManyToManyField(User,
                                   related_name='service_bid',
                                   blank=True)
-    price = models.DecimalField(max_digits=10, decimal_places=2, verbose_name='Цена услуги',
+    price = models.DecimalField(max_digits=10,
+                                decimal_places=2,
+                                verbose_name='Цена услуги',
                                 validators=[MinValueValidator(0.01)])
     updated = models.DateTimeField(auto_now=True, verbose_name='Дата последнего изменения')
     active = models.BooleanField(default=True, blank=False, verbose_name='Услуга активна')

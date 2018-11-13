@@ -43,21 +43,31 @@ class ServicesDetailView(ServiceModelMixin, DetailView):
     template_name = 'core/detail.html'
 
     def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(*args, **kwargs)
+        context = super().get_context_data(**kwargs)
+
         if self.object.customer == self.request.user:
             context['is_owner'] = 1
             context['list_customers'] = self.object.bids.all()
+        else:
+            context['is_in_list'] = 1 if self.request.user in self.object.bids.all() else 0
         return context
+
+    def post(self, request, *args, **kwargs):
+        self.get_object().bids.add(request.user)
+        return redirect(reverse_lazy('core:detail',
+                                     kwargs={'pk': self.get_object().id,
+                                             'slug': self.get_object().slug}))
 
 
 class MineOrders(LoginRequiredMixin, ServiceOwnerMixin, ListView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
+
         context['form'] = ServiceForm
         return context
 
 
-class CreateService(LoginRequiredMixin, CsrfExemptMixin, JsonRequestResponseMixin, CreateView):
+class CreateService(CsrfExemptMixin, JsonRequestResponseMixin, CreateView):
     form_class = ServiceForm
     success_url = reverse_lazy('core:mine')
 
@@ -68,9 +78,12 @@ class CreateService(LoginRequiredMixin, CsrfExemptMixin, JsonRequestResponseMixi
             return redirect(reverse_lazy('core:mine'))
 
     def form_valid(self, form):
-        form.instance.customer = self.request.user
-        form.instance.slug = slugify(unidecode(form.instance.name))
-        return super().form_valid(form)
+        if self.request.user.is_authenticated:
+            form.instance.customer = self.request.user
+            form.instance.slug = slugify(unidecode(form.instance.name))
+
+            return super().form_valid(form)
+        return redirect(reverse_lazy('account:login'))
 
 
 class EditService(LoginRequiredMixin, UpdateView):
@@ -79,13 +92,19 @@ class EditService(LoginRequiredMixin, UpdateView):
     template_name = 'core/edit.html'
     form_class = ServiceForm
 
+    def form_valid(self, form):
+        if self.request.user.is_authenticated:
+            form.instance.slug = slugify(unidecode(form.instance.name))
+
+            return super().form_valid(form)
+        return redirect(reverse_lazy('account:login'))
+
 
 class DeleteService(LoginRequiredMixin, DeleteView):
     model = Service
     success_url = reverse_lazy('core:mine')
 
     def get_object(self, queryset=None):
-        """ Hook to ensure object is owned by request.user. """
         obj = super().get_object()
         if not obj.customer == self.request.user:
             raise Http404
@@ -93,10 +112,3 @@ class DeleteService(LoginRequiredMixin, DeleteView):
 
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
-    # def form_invalid(self, form):
-    #     # return self.render_json_response({'errors': form.errors})
-    #     raise ValidationError(form.error_class)
-
-
-class AddUserToBids(LoginRequiredMixin, View):
-    def post(self, request, ):
