@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load bootstrap %}
+{% block title %}
+
+{% endblock %}
+
+{% block content %}
+    <div class="container my-5">
+        <div class="create_service">
+            <button type="button" id='create_service__button' class="btn btn-primary" data-toggle="modal"
+                    data-target="#exampleModal">
+                Добавить услугу
+            </button>
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Добавление услуги</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form action="{% url 'core:create' %}" method="POST">
+                            {% csrf_token %}
+                            <div class="modal-body">
+                                {{ form|bootstrap }}
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Применить</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% for i in object_list %}
+            <p><a href="{{ i.get_absolute_url }}">{{ i.name }}</a></p>
+        {% empty %}
+            <p>Вы еще не добавляли услугу на сайте!</p>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+
+{% block to_body %}
+    <script>
+        {#$(document).ready(function () {#}
+        {#    $('#create_service__button').on('click', function () {#}
+        {#        console.log('asdasd');#}
+        {##}
+        {#        $.ajax({#}
+        {#            type: 'GET',#}
+        {#            url: '{% url 'core:create' %}',#}
+        {#            success: function () {#}
+        {#                console.log('123');#}
+        {#            },#}
+        {#            error: function () {#}
+        {#                console.log('error');#}
+        {#            },#}
+        {#        });#}
+        {#    });#}
+        {#$('#module-contents').sortable({#}
+        {#    stop: function (event, ui) {#}
+        {#        contents_order = {};#}
+        {#        $('#module-contents').children().each(function () {#}
+        {#            // associate the module's id with its order#}
+        {#            contents_order[$(this).data('id')] = $(this).index();#}
+        {#        });#}
+        {#        $.ajax({#}
+        {#            type: 'POST',#}
+        {#            url: '{% url "content_order" %}',#}
+        {#            contentType: 'application/json; charset=utf-8',#}
+        {#            dataType: 'json',#}
+        {#            data: JSON.stringify(contents_order),#}
+        {#        });#}
+        {#    }#}
+        {#{)#}
+        {#;#}
+        {#{);#}
+    </script>
+{% endblock %}

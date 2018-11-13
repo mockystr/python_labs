@@ -5,8 +5,11 @@ from django.urls import reverse
 
 class Service(models.Model):
     name = models.CharField(max_length=200, verbose_name='Название')
-    slug = models.SlugField(max_length=200, verbose_name='Слаг')
+    slug = models.SlugField(max_length=200, verbose_name='Слаг', db_index=True, unique=True)
     description = models.TextField(blank=True, verbose_name='Описание услуги')
+    photo = models.ImageField(default='static/images/not_found.jpg',
+                              upload_to='services/%Y',
+                              verbose_name='Картинка услуги')
     customer = models.ForeignKey(User,
                                  related_name='service_created',
                                  on_delete=models.CASCADE,

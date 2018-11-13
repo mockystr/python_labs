@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load bootstrap %}
+
+{% block title %}Авторизация{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="module-login">
+            <h2 class="text-center">Логин</h2>
+            {% if form.errors %}
+                <p>Вы ввели неправильный пароль или логин</p>
+            {% endif %}
+            <div class="login-form">
+                <form action="{% url 'account:login' %}" method="post">
+                    {{ form|bootstrap }}
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ next }}"/>
+                    <button type="submit" class="btn btn-outline-primary">Подтвердить</button>
+                </form>
+            </div>
+        </div>
+        <a href="{% url "account:account_registration" %}">Зарегистрироваться</a>
+    </div>
+{% endblock %}

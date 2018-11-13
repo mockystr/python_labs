@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load bootstrap %}
+{% block title %}
+    Регистрация
+{% endblock %}
+
+{% block content %}
+    <div class="container my-5" style="max-width: 500px; margin: 0 auto;">
+        <h1 class="text-center">Регистрация</h1>
+        <div class="module">
+            <form action="" method="post" style="">
+                {{ form|bootstrap }}
+                {% csrf_token %}
+                <p class="text-center"><input type="submit" class="btn btn-success" value="Создать аккаунт"></p>
+            </form>
+        </div>
+    </div>
+{% endblock %}
