@@ -1,13 +1,24 @@
 {% extends "base.html" %}
 
 {% block title %}
-
+    Все услуги
 {% endblock %}
 
 {% block content %}
-    <div class="container">
+    <div class="container my-5">
         {% for i in object_list %}
-            <p><a href="{{ i.get_absolute_url }}">{{ i.name }}</a></p>
+            <div class="row">
+                <div class="col-lg-4 col-sm-6">
+                    <a href="{{ i.get_absolute_url }}">
+                        <img src="{{ i.photo.url }}" alt="" class="img-thumbnail list_image">
+                    </a>
+                </div>
+                <div class="col-lg-8 col-sm-6 list_info">
+                    <a href="{{ i.get_absolute_url }}">{{ i.name }}</a>
+                    <p class="text-muted">{{ i.customer.username }}</p>
+                </div>
+            </div>
+            <hr>
         {% endfor %}
     </div>
 {% endblock %}

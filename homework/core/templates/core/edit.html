@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load bootstrap %}
+{% block title %}
+    Изменение {{ object.name }}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <div class="update-form">
+            <form action="{% url 'core:edit' object.id%}" method="post" id="create-update">
+                {{ form|bootstrap }}
+                {% csrf_token %}
+                <p class="text-center"><input class="btn btn-outline-info" type="submit" value="Применить"></p>
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -1,16 +1,18 @@
 {% extends "base.html" %}
 {% load bootstrap %}
 {% block title %}
-
+    Мои услуги
 {% endblock %}
 
 {% block content %}
     <div class="container my-5">
         <div class="create_service">
-            <button type="button" id='create_service__button' class="btn btn-primary" data-toggle="modal"
-                    data-target="#exampleModal">
-                Добавить услугу
-            </button>
+            <div class="create_service__firstbutton">
+                <button type="button" id='create_service__button' class="btn btn-primary" data-toggle="modal"
+                        data-target="#exampleModal">
+                    +
+                </button>
+            </div>
             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
                  aria-hidden="true">
                 <div class="modal-dialog" role="document">
@@ -21,7 +23,8 @@
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
-                        <form action="{% url 'core:create' %}" method="POST">
+                        <form id='create_form__form' action="{% url 'core:create' %}" method="POST"
+                              enctype='multipart/form-data'>
                             {% csrf_token %}
                             <div class="modal-body">
                                 {{ form|bootstrap }}
@@ -35,9 +38,22 @@
             </div>
         </div>
         {% for i in object_list %}
-            <p><a href="{{ i.get_absolute_url }}">{{ i.name }}</a></p>
+            <div class="row">
+                <div class="col-lg-4 col-sm-6">
+                    <a href="{{ i.get_absolute_url }}">
+                        <img src="{{ i.photo.url }}" alt="" class="img-thumbnail list_image">
+                    </a>
+                </div>
+                <div class="col-lg-8 col-sm-6 list_info">
+                    <a href="{{ i.get_absolute_url }}">{{ i.name }}</a>
+                    <p class="text-muted">{{ i.customer.username }}</p>
+                    <a href="{% url 'core:delete' i.id %}">Удалить</a>
+                    <a href="{% url 'core:edit' i.id %}">Изменить</a>
+                </div>
+            </div>
+            <hr>
         {% empty %}
-            <p>Вы еще не добавляли услугу на сайте!</p>
+            Вы еще не добавляли услуги на сайте!
         {% endfor %}
     </div>
 {% endblock %}
@@ -45,21 +61,26 @@
 
 {% block to_body %}
     <script>
-        {#$(document).ready(function () {#}
-        {#    $('#create_service__button').on('click', function () {#}
-        {#        console.log('asdasd');#}
-        {##}
-        {#        $.ajax({#}
-        {#            type: 'GET',#}
-        {#            url: '{% url 'core:create' %}',#}
-        {#            success: function () {#}
-        {#                console.log('123');#}
-        {#            },#}
-        {#            error: function () {#}
-        {#                console.log('error');#}
-        {#            },#}
-        {#        });#}
-        {#    });#}
+        $(document).ready(function () {
+            $('#id_price').attr('min', 0);
+            {#myForm = $('#create_form__form');#}
+            {#myForm.on('submit', function (e) {#}
+            {#    e.preventDefault();#}
+            {##}
+            {#    $.ajax({#}
+            {#        type: 'POST',#}
+            {#        url: '{% url 'core:create' %}',#}
+            {#        data: myForm.serialize(),#}
+            {#        success: function () {#}
+            {#            location.reload();#}
+            {#        },#}
+            {#        error: function (data) {#}
+            {#            console.log(data);#}
+            {#            $('.modal-body').append('asdsd');#}
+            {#        },#}
+            {#    });#}
+            {#{);#}
+        });
         {#$('#module-contents').sortable({#}
         {#    stop: function (event, ui) {#}
         {#        contents_order = {};#}
@@ -77,6 +98,6 @@
         {#    }#}
         {#{)#}
         {#;#}
-        {#{);#}
+
     </script>
 {% endblock %}

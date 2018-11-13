@@ -1,11 +1,47 @@
 {% extends "base.html" %}
 
 {% block title %}
-
+    {{ object.name }}
 {% endblock %}
 
 {% block content %}
-    <div class="container">
-        <p>{{ object.name }}</p>
+    <div class="container detail-content_block">
+        <h1>{{ object.name }}</h1>
+        <p class="text-muted" style="font-size: 18px;">
+            Заказчик: {{ object.customer.username }}. Последнее изменение: {{ object.updated }}
+        </p>
+        <div class="row mt-3">
+            <div class="col-lg-6">
+                <img src="{{ object.photo.url }}" alt="" style="width: 100%;">
+            </div>
+            <div class="col-lg-6">
+                <h3 class="mt-0 mt-xs-5 ">Описание услуги:</h3>
+                <p>{{ object.description }}</p>
+            </div>
+        </div>
+        <div class="customers_list mt-3">
+            {% if list_customers %}
+                <h3>Откликнулись на заявку:</h3>
+                <ul>
+                    {% for i in list_customers %}
+                        <li>{{ i.username }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                {% if is_owner %}
+                    <h3>Пока еще никто не откликнулся на вашу заявку</h3>
+                {% else %}
+                    {% if request.user.is_authenticated %}
+                        <div class="enroll text-center mt-4">
+                            <form action="{% url 'core:add_user_to_service' %}">
+                                <button type="submit" class="btn btn-outline-success">Откликнуться!</button>
+                            </form>
+                        </div>
+                    {% else %}
+                        <p class="text-center mt-4">Авторизируйтесь на сайте, чтобы оставить заявку на услугу</p>
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        </div>
     </div>
 {% endblock %}
