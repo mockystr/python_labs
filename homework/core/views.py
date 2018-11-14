@@ -39,7 +39,7 @@ class ServicesListView(ServiceModelMixin, ListView):
     pass
 
 
-class ServicesDetailView(ServiceModelMixin, DetailView):
+class ServicesDetailView(ServiceModelMixin, CsrfExemptMixin, JsonRequestResponseMixin, DetailView):
     template_name = 'core/detail.html'
 
     def get_context_data(self, *args, **kwargs):

@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block title %}
     {{ object.name }}
 {% endblock %}
@@ -35,8 +35,8 @@
                         {% if is_in_list %}
                             <p class="text-center mt-4">Вы уже отправляли заявку!</p>
                         {% else %}
-                            <div class="enroll text-center mt-4">
-                                <form action="." method="post">
+                            <div class="respond_block text-center mt-4">
+                                <form action="." method="post" id="respond_form">
                                     {% csrf_token %}
                                     <button type="submit" class="btn btn-outline-success">Откликнуться!</button>
                                 </form>
@@ -49,4 +49,8 @@
             {% endif %}
         </div>
     </div>
+{% endblock %}
+
+{% block to_body %}
+    <script src="{% static 'js/enroll_w_reload.js' %}" type="text/javascript"></script>
 {% endblock %}
