@@ -36,7 +36,7 @@ class ServiceOwnerMixin(object):
 
 
 class ServicesListView(ServiceModelMixin, ListView):
-    pass
+    paginate_by = 5
 
 
 class ServicesDetailView(ServiceModelMixin, CsrfExemptMixin, JsonRequestResponseMixin, DetailView):

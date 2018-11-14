@@ -5,20 +5,43 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container my-5">
+    <div class="container my-5 infinite-container">
         {% for i in object_list %}
-            <div class="row">
-                <div class="col-lg-4 col-sm-6">
-                    <a href="{{ i.get_absolute_url }}">
-                        <img src="{{ i.photo.url }}" alt="" class="img-thumbnail list_image">
-                    </a>
+            <div class="infinite-item">
+                <div class="row">
+                    <div class="col-lg-4 col-sm-6">
+                        <a href="{{ i.get_absolute_url }}">
+                            <img src="{{ i.photo.url }}" alt="" class="img-thumbnail list_image">
+                        </a>
+                    </div>
+                    <div class="col-lg-8 col-sm-6 list_info">
+                        <a href="{{ i.get_absolute_url }}">{{ i.name }}</a>
+                        <p class="text-muted">{{ i.customer.username }}</p>
+                    </div>
                 </div>
-                <div class="col-lg-8 col-sm-6 list_info">
-                    <a href="{{ i.get_absolute_url }}">{{ i.name }}</a>
-                    <p class="text-muted">{{ i.customer.username }}</p>
-                </div>
+                <hr>
             </div>
-            <hr>
         {% endfor %}
     </div>
+
+    <div class="loading" style="display: none;">
+        Loading...
+    </div>
+    {% if page_obj.has_next %}
+        <a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}">More</a>
+    {% endif %}
+{% endblock %}
+
+{% block to_body %}
+    <script>
+        let infinite = new Waypoint.Infinite({
+            element: $('.infinite-container')[0],
+            onBeforePageLoad: function () {
+                $('.loading').show();
+            },
+            onAfterPageLoad: function ($items) {
+                $('.loading').hide();
+            }
+        });
+    </script>
 {% endblock %}
