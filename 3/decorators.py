@@ -8,6 +8,8 @@ def print_result(func):
             print('\n'.join([str(i) for i in res_of_func]))
         elif isinstance(res_of_func, dict):
             print('\n'.join(["{} = {}".format(key, value) for key, value in res_of_func.items()]))
+        else:
+            print(res_of_func)
 
     return printer
 
