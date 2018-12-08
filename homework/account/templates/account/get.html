@@ -1,13 +1,26 @@
 {% extends "base.html" %}
 {% load bootstrap %}
-
+{% load static %}
 {% block title %}{{ user.username }}{% endblock %}
 
 {% block content %}
     <div class="container">
-        <p>{{ user.username }}</p>
-        <p>{{ user.first_name }} {{ user.last_name }}</p>
-        <p>{{ user.profile.date_of_birth }}</p>
-    <p><img src="" alt=""></p>
+        <div class="row">
+            <div class="col-lg-6">
+                {% if user.profile.photo.url == '/uploaded/False/' or not user.profile.photo.url %}
+                <img src="{{ user.profile.photo.url }}" alt="" style="max-width: 100%">
+                {% else %}
+                    <img src="{% static 'images/profile_default.jpg' %}" style="max-width: 100%" alt="">
+                {% endif %}
+            </div>
+            <div class="col-lg-6">
+                <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+                <span class="" style="color: green">{{ user.profile.status }}</span>
+                <p class="text-muted">{{ user.username }}</p>
+                <p>{{ user.email }}</p>
+                <p>Дата рождения: {{ user.profile.date_of_birth }}</p>
+
+            </div>
+        </div>
     </div>
 {% endblock %}

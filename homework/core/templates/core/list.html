@@ -24,11 +24,11 @@
         {% endfor %}
     </div>
 
-    <div class="loading" style="display: none;">
+    <div class="loading" style="text-align: center;display: none;">
         Loading...
     </div>
     {% if page_obj.has_next %}
-        <a class="infinite-more-link" href="?page={{ page_obj.next_page_number }}">More</a>
+        <a class="infinite-more-link d-none" href="?page={{ page_obj.next_page_number }}">More</a>
     {% endif %}
 {% endblock %}
 

@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Service, Profile
+from .models import Service
 from django.contrib.auth.models import User
 
 

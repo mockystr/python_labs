@@ -8,7 +8,9 @@
     <div class="container detail-content_block">
         <h1>{{ object.name }}</h1>
         <p class="text-muted" style="font-size: 18px;">
-            Заказчик: {{ object.customer.username }}. Последнее изменение: {{ object.updated }}
+            Заказчик:
+            <a href="{% url 'account:get'  object.customer.username %}">{{ object.customer.username }}</a>.
+            Последнее изменение: {{ object.updated }}
         </p>
         <div class="row mt-3">
             <div class="col-lg-6">

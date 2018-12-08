@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Service, Profile
+from .models import Service
 
 
 @admin.register(Service)
@@ -9,6 +9,4 @@ class ServiceAdmin(admin.ModelAdmin):
     list_filter = ('active', 'updated')
 
 
-@admin.register(Profile)
-class ProfileAdmin(admin.ModelAdmin):
-    pass
+

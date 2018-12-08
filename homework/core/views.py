@@ -95,8 +95,7 @@ class EditService(LoginRequiredMixin, UpdateView):
     def form_valid(self, form):
         if self.request.user.is_authenticated:
             form.instance.slug = slugify(unidecode(form.instance.name))
-            self.object.photo = form.instance.photo
-            self.object.save()
+
             return super().form_valid(form)
         return redirect(reverse_lazy('account:login'))
 
