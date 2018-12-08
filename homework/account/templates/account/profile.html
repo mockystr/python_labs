@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load bootstrap %}
+
+{% block title %}Аккаунт{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <form method="POST" action="{% url 'account:edit' %}" enctype='multipart/form-data'>
+            {% csrf_token %}
+            {{ user_form.as_p }}
+            {{ profile_form.as_p }}
+            <button type="submit">Сохранить изменения</button>
+        </form>
+    </div>
+{% endblock %}

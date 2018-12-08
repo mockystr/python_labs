@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -76,14 +77,12 @@ WSGI_APPLICATION = 'homework.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'homeworkdb_mysql',
-        'USER': 'dbuser',
-        'PASSWORD': '123',
-        'HOST': 'localhost',
-        'PORT': 3306,  # Стандартный порт MySQL
-        'OPTIONS': {'charset': 'utf8'},
-        'TEST_CHARSET': 'utf8',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'homeworkdb',
+        'USER': 'hmuser',
+        'PASSWORD': 'qwerty123',
+        'HOST': '127.0.0.1',
+        'PORT': 5432,
     }
 }
 

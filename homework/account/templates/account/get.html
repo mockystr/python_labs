@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% load bootstrap %}
+
+{% block title %}{{ user.username }}{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <p>{{ user.username }}</p>
+        <p>{{ user.first_name }} {{ user.last_name }}</p>
+        <p>{{ user.profile.date_of_birth }}</p>
+    <p><img src="" alt=""></p>
+    </div>
+{% endblock %}
