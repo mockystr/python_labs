@@ -30,9 +30,6 @@ def field(l, *args):
 
 def gen_random(min_r, max_r, amount):
     for i in range(amount):
-        # просто рандомим из указанного интервала
-        # к max_r добавляем единицу, потому что
-        # без единицы интервал справа будет на 1 меньше, чем надо
         yield (random.randrange(min_r, max_r + 1))
 
 
