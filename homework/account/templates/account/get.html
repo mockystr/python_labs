@@ -1,25 +1,37 @@
 {% extends "base.html" %}
-{% load bootstrap %}
 {% load static %}
 {% block title %}{{ user.username }}{% endblock %}
 
 {% block content %}
     <div class="container">
-        <div class="row">
+        <div class="row my-3">
             <div class="col-lg-6">
-                {% if user.profile.photo.url == '/uploaded/False/' or not user.profile.photo.url %}
-                <img src="{{ user.profile.photo.url }}" alt="" style="max-width: 100%">
+                {% if not user.profile.photo.name %}
+                    <img src="{% static 'images/profile_default.jpg' %}" style="max-width: 100%" alt="Дефолт">
                 {% else %}
-                    <img src="{% static 'images/profile_default.jpg' %}" style="max-width: 100%" alt="">
+                    <img class="img-thumbnail" src="{{ user.profile.photo.url }}" alt="Аватарка">
                 {% endif %}
             </div>
             <div class="col-lg-6">
-                <h2>{{ user.first_name }} {{ user.last_name }}</h2>
-                <span class="" style="color: green">{{ user.profile.status }}</span>
-                <p class="text-muted">{{ user.username }}</p>
-                <p>{{ user.email }}</p>
-                <p>Дата рождения: {{ user.profile.date_of_birth }}</p>
-
+                {% if user.first_name and user.last_name %}
+                    <h2>{{ user.first_name }} {{ user.last_name }}</h2>
+                {% else %}
+                    <h2>Имя и фамилия не указаны</h2>
+                {% endif %}
+                {% if user.profile.status %}
+                    Статус: <span class="" style="color: green">{{ user.profile.status }}</span>
+                {% endif %}
+                <p class="text-muted">username: {{ user.username }}</p>
+                {% if user.email %}
+                    <p>{{ user.email }}</p>
+                {% else %}
+                    <p>email не указан</p>
+                {% endif %}
+                {% if user.profile.date_of_birth %}
+                    <p>Дата рождения: {{ user.profile.date_of_birth }}</p>
+                {% else %}
+                    <p>Дата рождения не указана</p>
+                {% endif %}
             </div>
         </div>
     </div>
