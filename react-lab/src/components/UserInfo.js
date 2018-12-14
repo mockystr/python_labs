@@ -1,7 +1,7 @@
 import React from 'react';
 import '../static/css/style.css';
 
-const ListOfRepos = props => {
+const UserInfo = props => {
     const {userInfo} = props;
     const userInfoBlock = () => {
         console.log(userInfo);
@@ -42,4 +42,4 @@ const ListOfRepos = props => {
     )
 };
 
-export default ListOfRepos;
+export default UserInfo;
