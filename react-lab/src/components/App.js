@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
-// import '../static/css/material.min.css'
-import '../static/css/style.css'
-import swal from 'sweetalert';
+import React, {Component} from 'react';
 import ListOfRepos from './List';
+import UserInfo from './UserInfo';
+
+import '../static/css/style.css'
 import axios from 'axios';
 
 const github_api = 'https://api.github.com';
@@ -10,12 +10,34 @@ const github_api = 'https://api.github.com';
 class App extends Component {
 
     state = {
-        repos: []
+        repos: [],
+        userInfo: []
     };
 
     getRepos = (username) => {
         return axios.get(`${github_api}/users/${username}/repos?sort=updated`);
-    }
+    };
+
+    getInfo = (username) => {
+        return axios.get(`${github_api}/users/${username}`);
+    };
+
+    searcUserInfo = async (username) => {
+        try {
+            const response = await this.getInfo(username);
+            console.log(response.data);
+
+            this.setState({
+                userInfo: response.data
+            });
+        } catch (err) {
+            console.log(err);
+            alert('User 404');
+
+            this.setState({userInfo: []});
+
+        }
+    };
 
     searchUserRepos = async (username) => {
         try {
@@ -26,45 +48,35 @@ class App extends Component {
             });
         } catch (err) {
             console.log(err);
-            let statusCode = 500;
-            let message = null;
 
-            this.setState({ repos: [] });
-
-            if (err.response) {
-                statusCode = err.response.status;
-                console.log(statusCode);
-            }
-
-            switch (statusCode) {
-                case 404:
-                    message = 'User not found';
-                    break;
-                default:
-                    message = 'Something gone wrong. Try again later';
-                    break;
-            }
-            swal("Error", message, "error");
+            this.setState({repos: []});
         }
-    }
+    };
 
     render() {
         return (
             <div>
-                <div className="row">
-                    <div className="input-group mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1">@</span>
+                <div className="row justify-content-center">
+                    <div className="search_block input-group mb-3">
+                        <div className="input-group-prepend">
+                            <span className="input-group-text" id="basic-addon1">@</span>
                         </div>
-                        <input id="search_repo" type="text" className="form-control" placeholder="username" aria-label="username" aria-describedby="button-addon2" />
-                        <div class="input-group-append">
-                            <button onClick={() => this.searchUserRepos($('#search_repo').val())}
-                                className="btn btn-outline-info"
-                                type="button" id="button-addon2">Искать</button>
-                        </div>
+                        <input id="search_repo" type="text" className="form-control" placeholder="username"
+                               aria-label="username" aria-describedby="button-addon2"
+                               onKeyDown={(e) => {
+                                   if (e.keyCode === 13) {
+                                       const search_val = $('#search_repo').val();
+
+                                       if (search_val) {
+                                           this.searcUserInfo(search_val);
+                                           this.searchUserRepos(search_val);
+                                       }
+                                   }
+                               }}/>
                     </div>
                 </div>
-                <ListOfRepos reposData={this.state.repos} />
+                <UserInfo userInfo={this.state.userInfo}/>
+                <ListOfRepos reposData={this.state.repos}/>
             </div>
         )
     }
