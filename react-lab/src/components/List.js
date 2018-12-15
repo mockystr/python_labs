@@ -21,7 +21,7 @@ const ListOfRepos = props => {
 
     return (
         <div>
-                {reposList}
+            {reposList}
         </div>
     )
 };

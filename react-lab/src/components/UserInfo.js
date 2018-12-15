@@ -21,7 +21,7 @@ const UserInfo = props => {
                             <p><span className='text-muted'>followers:</span> {userInfo.followers}</p>
                             }
                             {userInfo.following &&
-                            <p><span className='text-muted'>following:</span> {userInfo.following}</p>
+                            <p><span className='text-muted'> following:</span> {userInfo.following}</p>
                             }
                         </div>
                     </div>
