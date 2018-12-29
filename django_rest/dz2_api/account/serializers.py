@@ -66,7 +66,7 @@ class ProfileUserSerializer(serializers.ModelSerializer):
         read_only_fields = ('user',)
 
     def to_representation(self, instance):
-        print(instance.profile.__dict__)
+        # print(instance.profile.__dict__)
         representation = {
             'id': instance.id,
             'username': instance.username,

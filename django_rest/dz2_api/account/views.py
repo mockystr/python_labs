@@ -56,43 +56,6 @@ class ProfileUpdateView(UpdateAPIView):
     queryset = User.objects.all()
     serializer_class = ProfileUserSerializer
 
-    # def patch(self, request):
-    #     print('')
-    #     print('')
-    #     print('PATCH')
-    #     print('')
-    #     print('')
-    #     print(request.data)
-    #     print('')
-    #     print('')
-    #     request.data['user_id'] = request.user
-    #     print(request.data)
-    #     print('')
-    #     print('')
-    #
-    #     profile_ser = ProfileUserSerializer(data=request.data)
-    #     if profile_ser.is_valid():
-    #         profile = profile_ser.save()
-    #         if profile:
-    #             return Response(profile_ser.data, status=status.HTTP_200_OK)
-    #
-    #     return Response(profile_ser.errors, status=status.HTTP_400_BAD_REQUEST)
-    #
-    # def put(self, request):
-    #     print('')
-    #     print('')
-    #     print('PUT')
-    #     print('')
-    #     print('')
-    #
-    #     profile_ser = ProfileUserSerializer(data=request.data)
-    #     if profile_ser.is_valid():
-    #         profile = profile_ser.save()
-    #         if profile:
-    #             return Response(profile_ser.data, status=status.HTTP_200_OK)
-    #
-    #     return Response(profile_ser.errors, status=status.HTTP_400_BAD_REQUEST)
-
     def get_object(self):
         return self.request.user
 
@@ -100,7 +63,15 @@ class ProfileUpdateView(UpdateAPIView):
         return self.update(request, *args, **kwargs)
 
 
-class GetProfileView(RetrieveAPIView):
+class GetProfileByIdView(RetrieveAPIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = ProfileUserSerializer
+    lookup_field = 'pk'
+    queryset = User.objects.filter(is_active=True)
+
+
+class GetProfileByUsernameView(RetrieveAPIView):
     authentication_classes = (TokenAuthentication,)
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = ProfileUserSerializer
@@ -108,12 +79,12 @@ class GetProfileView(RetrieveAPIView):
 
     queryset = User.objects.filter(is_active=True)
 
-    def to_representation(self, instance):
-        representation = {
-            '123': '123332'
-        }
+    # def to_representation(self, instance):
+    #     representation = {
+    #         '123': '123332'
+    #     }
+    #     return representation
 
-        return representation
     # def get_queryset(self):
     #     qs = super().get_queryset()
     #     # qs.profile = self.request.user.profile
@@ -121,9 +92,14 @@ class GetProfileView(RetrieveAPIView):
     #     return qs
 
 
-class UserDeleteView(DestroyAPIView):
+class UserDeleteView(APIView):
+    permission_classes = (IsCurrentUserOrReadOnly,
+                          permissions.IsAuthenticated,)
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsCurrentUserOrReadOnly, permissions.IsAuthenticated,)
 
-    queryset = User.objects.all()
-    serializer_class = UserSerializer
+    def post(self, request, format=None, *args, **kwargs):
+        try:
+            User.objects.get(pk=request.user.id).delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except:
+            return Response(status=status.HTTP_409_CONFLICT)

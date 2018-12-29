@@ -5,8 +5,10 @@ from django.http import Http404
 from .serializers import ServiceListSerializer, ServiceDetailSerializer, ServiceDetailEditDeleteSerializer
 from .models import Service
 from .permissions import IsOwnerOrReadOnly
+# from account.views import GetProfileByIdView
 
 from unidecode import unidecode
+import requests
 
 from rest_framework import permissions
 from rest_framework.generics import (ListAPIView,
@@ -15,6 +17,9 @@ from rest_framework.generics import (ListAPIView,
                                      UpdateAPIView,
                                      DestroyAPIView
                                      )
+from rest_framework.views import APIView
+from rest_framework import status
+from rest_framework.response import Response
 from rest_framework.authentication import (TokenAuthentication,
     # SessionAuthentication,
     # BaseAuthentication,
@@ -36,6 +41,15 @@ class ServiceListView(ListAPIView):
     queryset = Service.objects.filter(active=True)
     serializer_class = ServiceListSerializer
     # authentication_classes = (TokenAuthentication,)
+
+
+class ServiceMineListView(ListAPIView):
+    serializer_class = ServiceListSerializer
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def get_queryset(self):
+        return Service.objects.filter(customer=self.request.user)
 
 
 class ServiceDetailView(RetrieveAPIView):
@@ -86,3 +100,16 @@ class ServiceCreateView(CreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(customer=self.request.user)
+
+
+class AddToBidsView(APIView):
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (permissions.IsAuthenticated,)
+
+    queryset = Service.objects.all()
+    serializer_class = ServiceDetailEditDeleteSerializer
+
+    def post(self, request, pk):
+        obj = Service.objects.get(pk=pk)
+        obj.bids.add(request.user)
+        return Response(status=status.HTTP_204_NO_CONTENT)
