@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 
 from .permissions import IsCurrentUserOrReadOnly
 from .serializers import LoginSerializer, UserSerializer, ProfileUserSerializer
+from .models import Profile
 
 from rest_framework import status
 from rest_framework import permissions
@@ -19,9 +20,12 @@ from rest_framework.generics import UpdateAPIView, RetrieveAPIView, DestroyAPIVi
 class UserCreate(APIView):
     def post(self, request, format='json'):
         serializer = UserSerializer(data=request.data)
+
         if serializer.is_valid():
             user = serializer.save()
             if user:
+                # p = Profile.objects.create(user=user)
+                # p.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -57,7 +61,7 @@ class ProfileUpdateView(UpdateAPIView):
     serializer_class = ProfileUserSerializer
 
     def get_object(self):
-        return self.request.user
+        return self.request.user.profile
 
     def put(self, request, *args, **kwargs):
         return self.update(request, *args, **kwargs)
