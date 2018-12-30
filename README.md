@@ -7,3 +7,4 @@ Python labs BMSTU
 * [Лабораторная 5](https://github.com/mockystr/python_labs/tree/lab5)
 * [Лабораторная 6](https://github.com/mockystr/python_labs/tree/lab6)
 * [Домашная работа 1](https://github.com/mockystr/python_labs/tree/dz1)
+* [Домашная работа 2](https://github.com/mockystr/python_labs/tree/dz2)
