@@ -69,7 +69,7 @@ class ProfileUpdateView(UpdateAPIView):
 
 class GetProfileByIdView(RetrieveAPIView):
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (permissions.IsAuthenticated,)
+    # permission_classes = (permissions.IsAuthenticated,)
     serializer_class = ProfileUserSerializer
     lookup_field = 'pk'
     queryset = User.objects.filter(is_active=True)
@@ -77,7 +77,7 @@ class GetProfileByIdView(RetrieveAPIView):
 
 class GetProfileByUsernameView(RetrieveAPIView):
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (permissions.IsAuthenticated,)
+    # permission_classes = (permissions.IsAuthenticated,)
     serializer_class = ProfileUserSerializer
     lookup_field = 'username'
 

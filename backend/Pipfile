@@ -17,6 +17,8 @@ django-filter = "*"
 #six = "*"
 django-rest-auth = "*"
 django-allauth = "*"
+requests = "*"
+django-cors-headers = "*"
 
 [pipenv]
 allow_prereleases = true

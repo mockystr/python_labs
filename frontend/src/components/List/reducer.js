@@ -7,7 +7,12 @@ const ACTIONS = {
 }
 
 const initialState = {
-    services: [],
+    services: {
+        next: '',
+        page: 1,
+        count: 0,
+        results: []
+    },
     isLoading: false,
 }
 
@@ -16,27 +21,36 @@ const listReducer = (state = initialState, action) => {
         case ACTIONS.START_LOADING:
             return { ...state, isLoading: true };
         case ACTIONS.DATA_LOADED:
-            return { ...state, isLoading: false, services: action.payload };
+            console.log('load action.payload.results', action.payload.results);
+
+            return {
+                ...state,
+                isLoading: false,
+                services: {
+                    ...action.payload,
+                    page: state.services.page + 1,
+                    // results: [...state.services.results, ...action.payload.results]
+                    results: state.services.results.concat(...action.payload.results)
+                }
+            };
         default:
             return state;
     }
 }
 
-export const loadServices = () => async (dispatch) => {
+export const loadServices = (page) => async (dispatch) => {
     try {
         dispatch({
             type: ACTIONS.START_LOADING,
         });
-        const res = await getServices();
-        console.log(res.data);
+        const res = await getServices(page);
 
         dispatch({
             type: ACTIONS.DATA_LOADED,
-            payload: res.data.results,
+            payload: res.data,
         });
     } catch (err) {
         console.log(err);
-
         dispatch({
             type: ACTIONS.ERROR_LOADING,
         });

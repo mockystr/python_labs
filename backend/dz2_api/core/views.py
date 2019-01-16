@@ -54,7 +54,7 @@ class ServiceMineListView(ListAPIView):
 
 class ServiceDetailView(RetrieveAPIView):
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (permissions.IsAuthenticated,)
+    # permission_classes = (permissions.IsAuthenticated,)
     serializer_class = ServiceDetailSerializer
 
     queryset = Service.objects.filter(active=True)

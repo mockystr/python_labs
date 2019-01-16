@@ -105,10 +105,10 @@ class ProfileUserSerializer(serializers.ModelSerializer):
                                        max_length=30)
     last_name = serializers.CharField(required=False,
                                       max_length=150)
-
+    username = serializers.CharField(read_only=True)
     class Meta:
         model = Profile
-        fields = ('id', 'user_id',
+        fields = ('id', 'user_id', 'username',
                   'email', 'first_name', 'last_name',
                   'date_of_birth', 'status', 'photo')
         read_only_fields = ('user_id',)
