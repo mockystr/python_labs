@@ -2,37 +2,35 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import { loadServices } from 'components/List/reducer';
-import InfiniteScroll from 'react-infinite-scroll-component';
+// import InfiniteScroll from 'redux-infinite-scroll';
 
 class List extends Component {
-  render() {
-    const { services, loadServices } = this.props;
-    const { results } = services;
+  componentDidMount() {
+    const { isLoading, services } = this.props;
 
-    console.log('services', services);
+    if (!isLoading && services.results.length === 0) {
+      const { loadServices } = this.props
+      loadServices();
+    }
+  }
+
+  render() {
+    const { services, isLoading } = this.props;
 
     return (
-      <div className='container'>
-        <InfiniteScroll
-          dataLength={results.length}
-          next={loadServices(services.page)}
-          hasMore={services.next == null ? true : false}
-          loader={<h4>Loading INFINITESCROLL</h4>}
-          endMessage={<h4>end</h4>}
-        >
+      isLoading ? <h1 className='text-center mt-4'>Загрузка</h1> :
+        <div className='container mt-4' >
           {services.results.map(el => {
             return (
-              <div className=""
-              // key={el.pk}
-              >
+              <div className="" key={el.pk}>
                 <div className="row">
                   <div className="col-lg-4 col-sm-6">
-                    <Link to={`/${el.pk}`}>
+                    <Link to={`/${el.pk}/`}>
                       <img src={el.photo} alt="service_photo" className="img-thumbnail list_image" />
                     </Link>
                   </div>
                   <div className="col-lg-8 col-sm-6 list_info">
-                    <Link to={`/${el.pk}`}>{el.name}</Link>
+                    <Link to={`/${el.pk}/`}>{el.name}</Link>
                     <p className="text-muted">
                       {el.customer_username}
                     </p>
@@ -40,11 +38,10 @@ class List extends Component {
                 </div>
                 <hr />
               </div>
-            )
+            );
           })
           }
-        </InfiniteScroll>
-      </div>
+        </div>
     );
   }
 }

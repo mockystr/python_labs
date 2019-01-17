@@ -7,7 +7,9 @@ const ACTIONS = {
 }
 
 const initialState = {
-    service: {},
+    service: {
+        customer: { username: '' }
+    },
     isLoading: false,
 }
 
@@ -28,7 +30,6 @@ export const loadServiceById = (id) => async (dispatch) => {
             type: ACTIONS.START_LOADING,
         });
         const res = await getServiceById(id);
-        console.log(res.data);
 
         dispatch({
             type: ACTIONS.DATA_LOADED,

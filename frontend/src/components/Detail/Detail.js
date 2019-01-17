@@ -16,35 +16,32 @@ class Detail extends Component {
 
     render() {
         const { isLoading, service } = this.props;
-        console.log(service);
+
         return (
             <div>
-                {isLoading &&
-                    <p>Загрузка</p>
-                }
-                {!isLoading &&
-                    <div class="container detail-content_block">
+                {isLoading ? <p>Загрузка</p> :
+                    <div className="container detail-content_block">
                         <h1>{service.name}</h1>
-                        <p class="text-muted">
+                        <p className="text-muted">
                             Заказчик:
-                            <Link to={`account/id/`}>
-                                {/* {service.customer.username} */}
+                            <Link to={`account/id/${service.customer.id}`}>
+                                {service.customer.username}
                             </Link>.
                             Последнее изменение: {service.updated}
                         </p>
-                        <div class="row mt-3">
-                            <div class="col-lg-6">
+                        <div className="row mt-3">
+                            <div className="col-lg-6">
                                 <img src={service.photo} alt="" style={{ width: '100%' }} />
                             </div>
-                            <div class="col-lg-6">
-                                <h3 class="mt-0 mt-xs-5 ">Цена услуги:</h3>
+                            <div className="col-lg-6">
+                                <h3 className="mt-0 mt-xs-5 ">Цена услуги:</h3>
                                 <p>{service.price}</p>
 
-                                <h3 class="mt-0 mt-xs-5 ">Описание услуги:</h3>
+                                <h3 className="mt-0 mt-xs-5 ">Описание услуги:</h3>
                                 <p>{service.description}</p>
                             </div>
                         </div>
-                        <div class="customers_list mt-3">
+                        <div className="customers_list mt-3">
                         </div>
                     </div>
                 }

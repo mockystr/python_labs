@@ -1,4 +1,6 @@
 import { getServices } from "api";
+import { store } from 'index';
+
 
 const ACTIONS = {
     START_LOADING: 'LIST_START_LOADING',
@@ -38,12 +40,14 @@ const listReducer = (state = initialState, action) => {
     }
 }
 
-export const loadServices = (page) => async (dispatch) => {
+
+export const loadServices = () => async (dispatch) => {
     try {
         dispatch({
             type: ACTIONS.START_LOADING,
         });
-        const res = await getServices(page);
+
+        const res = await getServices(store.getState().list.services.page);
 
         dispatch({
             type: ACTIONS.DATA_LOADED,
