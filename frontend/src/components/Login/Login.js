@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter, Link } from 'react-router-dom';
-import { loginUser } from 'components/Login/reducer';
+import { withRouter, Link, Route, Redirect } from 'react-router-dom';
+import { loginUser, logoutUser } from 'components/Login/reducer';
 import 'components/Login/styles.css';
-import {login} from 'api'
+
+
 class Login extends Component {
     constructor(props) {
         super(props);
-        login('mockingbird', 'qwerty123');
 
         this.handleUsernameInputChange = this.handleUsernameInputChange.bind(this)
         this.handlePasswordInputChange = this.handlePasswordInputChange.bind(this)
@@ -35,15 +35,22 @@ class Login extends Component {
     }
 
     render() {
-        return (
+        const { user, match: {path} } = this.props;
+        
+        console.log('USER', user);
+        console.log(path)
+        if (path === '/account/logout/') {
+            logoutUser();
+            return (<Redirect to='/' />);
+        }
+        else return (
             <div className='container mt-5 module-container'>
                 <h2 className='text-center'>Логин</h2>
-
                 <form onSubmit={this.handleLoginForm}>
                     <div className="form-group">
                         <label className="control-label  " htmlFor="id_username">Имя пользователя</label>
                         <div className=" ">
-                            <input type="text" name="username" className=" form-control" autoFocus="" id="id_username" required=""
+                            <input type="text" name="username" className=" form-control" autoFocus="" id="id_username" required={true}
                                 onChange={this.handleUsernameInputChange} />
                         </div>
                     </div>
@@ -51,7 +58,7 @@ class Login extends Component {
                     <div className="form-group">
                         <label className="control-label  " htmlFor="id_password">Пароль</label>
                         <div className=" ">
-                            <input type="password" name="password" className=" form-control" id="id_password" required=""
+                            <input type="password" name="password" className=" form-control" id="id_password" required={true}
                                 onChange={this.handlePasswordInputChange} />
                         </div>
                     </div>
@@ -60,8 +67,9 @@ class Login extends Component {
                     <Link to="/account/register/" className="btn btn-outline-info" style={{ float: 'right' }}>
                         Зарегистрироваться
                     </Link>
+                    {user.username && <Redirect to='/' />}
                 </form>
-            </div>)
+            </div>)  
     }
 }
 
@@ -70,7 +78,8 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = {
-    loginUser
+    loginUser,
+    logoutUser,
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));

@@ -15,6 +15,7 @@ class App extends Component {
           <Route exact path='/' component={List} />
           <Route exact path='/:id/' component={Detail} />
           <Route exact path='/account/login/' component={Login} />
+          <Route exact path='/account/logout/' component={Login} />
         </Switch>
       </Fragment>
     );

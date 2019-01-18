@@ -23,15 +23,12 @@ const listReducer = (state = initialState, action) => {
         case ACTIONS.START_LOADING:
             return { ...state, isLoading: true };
         case ACTIONS.DATA_LOADED:
-            console.log('load action.payload.results', action.payload.results);
-
             return {
                 ...state,
                 isLoading: false,
                 services: {
                     ...action.payload,
                     page: state.services.page + 1,
-                    // results: [...state.services.results, ...action.payload.results]
                     results: state.services.results.concat(...action.payload.results)
                 }
             };

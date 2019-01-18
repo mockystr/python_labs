@@ -15,7 +15,7 @@ import { save } from 'redux-localstorage-simple';
 
 const appReducers = { list, detail, login };
 export const store = createStore(combineReducers(appReducers),
-    composeWithDevTools(applyMiddleware(save({namespace:'serviceApp'}),thunk)));
+    composeWithDevTools(applyMiddleware(save({ states: ['login'] }),thunk)));
 
 
 ReactDOM.render(

@@ -17,6 +17,8 @@ export const login = (username, password) => (axios.post(
         }
     }
 ))
+export const logout = (username, password) => (axios.post(`${url}account/logout/`))
+
 
 export const getProfileById = (id) => axios.get(url + `account/id/${id}/`);
 export const getProfileByUsername = (username) => axios.get(url + `account/username/${username}/`);
