@@ -26,8 +26,7 @@ class Login extends Component {
         this.setState({ passwordInput: value });
     }
 
-    handleLoginForm = (e) => {
-        e.preventDefault();
+    handleLoginForm = () => {
         const { loginUser } = this.props;
         const { usernameInput, passwordInput } = this.state;
 
@@ -35,18 +34,22 @@ class Login extends Component {
     }
 
     render() {
-        const { user, match: {path} } = this.props;
-        
-        console.log('USER', user);
-        console.log(path)
+        const { logoutUser, match: { path } } = this.props;
+
+        console.log('path temp', path);
+
         if (path === '/account/logout/') {
             logoutUser();
-            return (<Redirect to='/' />);
+            return <Redirect to='/account/login/' />;
         }
-        else return (
+
+        const { user } = this.props;
+        console.log('USER', user);
+
+        return (
             <div className='container mt-5 module-container'>
                 <h2 className='text-center'>Логин</h2>
-                <form onSubmit={this.handleLoginForm}>
+                <form>
                     <div className="form-group">
                         <label className="control-label  " htmlFor="id_username">Имя пользователя</label>
                         <div className=" ">
@@ -63,13 +66,13 @@ class Login extends Component {
                         </div>
                     </div>
 
-                    <button type="submit" className="btn btn-outline-primary">Подтвердить</button>
+                    <button onClick={this.handleLoginForm} type='button' className="btn btn-outline-primary">Подтвердить</button>
                     <Link to="/account/register/" className="btn btn-outline-info" style={{ float: 'right' }}>
                         Зарегистрироваться
                     </Link>
-                    {user.username && <Redirect to='/' />}
                 </form>
-            </div>)  
+            </div>
+        )
     }
 }
 

@@ -42,6 +42,10 @@ class ServiceListView(ListAPIView):
     serializer_class = ServiceListSerializer
     # authentication_classes = (TokenAuthentication,)
 
+    def get_queryset(self):
+        print(self.request.user)
+        return super().get_queryset()
+
 
 class ServiceMineListView(ListAPIView):
     serializer_class = ServiceListSerializer

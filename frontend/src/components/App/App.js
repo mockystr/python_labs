@@ -12,10 +12,12 @@ class App extends Component {
       <Fragment>
         <Header />
         <Switch>
+          <Route path='/account/login/' component={Login} />
+          <Route path='/account/logout/' component={Login} />
+          
           <Route exact path='/' component={List} />
-          <Route exact path='/:id/' component={Detail} />
-          <Route exact path='/account/login/' component={Login} />
-          <Route exact path='/account/logout/' component={Login} />
+          <Route path='/mine/' component={List} />
+          <Route path='/:id/' component={Detail} />
         </Switch>
       </Fragment>
     );
