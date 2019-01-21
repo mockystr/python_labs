@@ -32,6 +32,8 @@ const listReducer = (state = initialState, action) => {
                     results: state.services.results.concat(...action.payload.results)
                 }
             };
+        case ACTIONS.ERROR_LOADING:
+            return { ...state, isLoading: false, };
         default:
             return state;
     }

@@ -1,32 +1,43 @@
 import React, { Component } from 'react';
 // import { getServiceById } from 'api';
 import { connect } from 'react-redux';
-import { withRouter, Link } from 'react-router-dom';
-import { loadServiceById } from 'components/Detail/reducer';
+import { withRouter, Link, Redirect } from 'react-router-dom';
+import { loadServiceById, addToBids } from 'components/Detail/reducer';
 import moment from 'moment';
+import _ from 'lodash';
+
 
 class Detail extends Component {
-    componentDidMount() {
-        const id = this.props.match.params.id
-        const { loadServiceById, isLoading, service } = this.props;
+    constructor(props) {
+        super(props);
 
-        if (!isLoading && service) {
+        const id = props.match.params.id
+        const { loadServiceById, detail: { isLoading } } = props;
+
+        if (!isLoading) {
             loadServiceById(id);
         }
     }
 
+    handleActivityButton = () => {
+        const id = this.props.match.params.id
+        const { addToBids, login: { user: { token } } } = this.props;
+
+        addToBids(id, token);
+        return <Redirect push to={`/${id}`} />
+    }
+
     render() {
-        const { isLoading, service } = this.props;
+        const { detail: { isLoading, service }, login } = this.props;
         service.updated = moment(Date.parse(service.updated)).format('DD.MM.YYYY HH:mm')
-        // console.log(moment(service.updated, 'YYYY-MM-DD'))
+
         return (
-            <div>
+            <div className='container'>
                 {isLoading ? <p>Загрузка</p> :
-                    <div className="container detail-content_block">
+                    <div className=" detail-content_block">
                         <h1 className='mt-3'>{service.name}</h1>
                         <p className="text-muted">
-                            Заказчик:
-                            <Link to={`account/id/${service.customer.id}`}>
+                            Заказчик: <Link to={`/account/username/${service.customer.username}`}>
                                 {service.customer.username}
                             </Link>.
                             Последнее изменение: {service.updated}
@@ -47,17 +58,41 @@ class Detail extends Component {
                         </div>
                     </div>
                 }
-            </div >
+                <div>
+                    {login.user.token ?
+                        service.customer.username === login.user.username ?
+                            <div>
+                                <h2>Список откликнушихся на вашу услугу:</h2>
+                                <ul>
+                                    {service.bids.map(el =>
+                                        <li key={el.user.id}>
+                                            {el.user.username}
+                                        </li>
+                                    )}
+                                </ul>
+                            </div>
+                            : _.map(service.bids, 'user.username').includes(login.user.username) ?
+                                <h2 className='text-center my-4'>Вы уже откликнулись на услугу</h2> :
+                                <p className='text-center my-4'>
+                                    <button onClick={this.handleActivityButton} type='button' className='btn btn-outline-success'>Откликнуться</button>
+                                </p>
+                        :
+                        <div className='text-center my-4'>
+                            <Link to='/account/login/'>Авторизируйтесь, чтобы откликнуться</Link>
+                        </div>
+                    }
+                </div>
+            </div>
         );
     }
 }
 
 const mapStateToProps = (state) => {
-    return state.detail;
+    return { detail: state.detail, login: state.login };
 }
 
 const mapDispatchToProps = {
-    loadServiceById
+    loadServiceById, addToBids
 }
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Detail));

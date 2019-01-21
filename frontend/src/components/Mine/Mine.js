@@ -112,6 +112,7 @@ class Mine extends Component {
                             </form>
                         </div>
                     </div>
+                    <hr />
                     <h2 className='text-center'>МОИ УСЛУГИ</h2>
                     {services.results.length === 0 ? <p>У вас пока что нет ни одной услуги</p> :
                         services.results.map(el => {

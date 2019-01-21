@@ -1,9 +1,13 @@
-import { getServiceById } from "api";
+import { getServiceById, addUserToBids } from "api";
 
 const ACTIONS = {
     START_LOADING: 'DETAIL_START_LOADING',
     DATA_LOADED: 'DETAIL_DATA_LOADED',
     ERROR_LOADING: 'DETAIL_ERROR_LOADING',
+
+    DETAIL_ADD_START_LOADING: 'DETAIL_ADD_START_LOADING',
+    DETAIL_ADD_DATA_LOADED: 'DETAIL_ADD_DATA_LOADED',
+    DETAIL_ADD_ERROR_LOADING: 'DETAIL_ADD_ERROR_LOADING',
 }
 
 const initialState = {
@@ -19,6 +23,13 @@ const detailReducer = (state = initialState, action) => {
             return { ...state, isLoading: true };
         case ACTIONS.DATA_LOADED:
             return { ...state, isLoading: false, service: action.payload };
+
+        case ACTIONS.DETAIL_ADD_START_LOADING:
+            return { ...state, isLoading: true, }
+        case ACTIONS.DETAIL_ADD_DATA_LOADED:
+            return { ...state, isLoading: false, }
+        case ACTIONS.DETAIL_ADD_ERROR_LOADING:
+            return { ...state, isLoading: false, }
         default:
             return state;
     }
@@ -40,6 +51,26 @@ export const loadServiceById = (id) => async (dispatch) => {
 
         dispatch({
             type: ACTIONS.ERROR_LOADING,
+        });
+    }
+}
+
+export const addToBids = (id, token) => async (dispatch) => {
+    try {
+        dispatch({
+            type: ACTIONS.DETAIL_ADD_START_LOADING,
+        });
+
+        await addUserToBids(id, token);
+
+        dispatch({
+            type: ACTIONS.DETAIL_ADD_DATA_LOADED,
+        });
+    } catch (err) {
+        console.log(err);
+
+        dispatch({
+            type: ACTIONS.DETAIL_ADD_ERROR_LOADING,
         });
     }
 }

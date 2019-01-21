@@ -60,6 +60,20 @@ export const deleteServiceById = (id, token) => {
     );
 }
 
+export const addUserToBids = (id, token) => {
+    return axios.post(
+        `${url}add/${id}/`,
+        {
+
+        },
+        {
+            headers: {
+                'Authorization': `Token ${token}`,
+            }
+        }
+    )
+}
+
 /* ACCOUNT API */
 
 export const register = (username, password1, password2, email) => (axios.post(
