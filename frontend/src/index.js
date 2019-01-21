@@ -2,9 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from 'components/App/App';
 import list from 'components/List/reducer';
+import mine from 'components/Mine/reducer';
 import detail from 'components/Detail/reducer';
 import login from 'components/Login/reducer';
-
+import register from 'components/Register/reducer';
 
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
@@ -13,9 +14,9 @@ import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { save } from 'redux-localstorage-simple';
 
-const appReducers = { list, detail, login };
+const appReducers = { list, detail, mine, login, register };
 export const store = createStore(combineReducers(appReducers),
-    composeWithDevTools(applyMiddleware(save({ states: ['login'] }),thunk)));
+    composeWithDevTools(applyMiddleware(save({ states: ['login'] }), thunk)));
 
 
 ReactDOM.render(

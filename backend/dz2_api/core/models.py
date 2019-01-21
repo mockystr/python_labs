@@ -27,7 +27,7 @@ class Service(models.Model):
                                 verbose_name='Цена услуги',
                                 validators=[MinValueValidator(0.01)])
     updated = models.DateTimeField(auto_now=True, verbose_name='Дата последнего изменения')
-    active = models.BooleanField(default=True, blank=False, verbose_name='Услуга активна')
+    active = models.BooleanField(default=True, blank=True, verbose_name='Услуга активна')
 
     class Meta:
         ordering = ('-updated',)

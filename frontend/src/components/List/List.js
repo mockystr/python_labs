@@ -30,7 +30,7 @@ class List extends Component {
                     </Link>
                   </div>
                   <div className="col-lg-8 col-sm-6 list_info">
-                    <Link to={`/${el.pk}/`}>{el.name}</Link>
+                    <Link to={`/${el.pk}/`}>{el.name} ({el.pk})</Link>
                     <p className="text-muted">
                       {el.customer_username}
                     </p>

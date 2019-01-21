@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { withRouter, Link, Route, Redirect } from 'react-router-dom';
+import { withRouter, Link, Redirect } from 'react-router-dom';
 import { loginUser, logoutUser } from 'components/Login/reducer';
 import 'components/Login/styles.css';
 
@@ -71,6 +71,7 @@ class Login extends Component {
                         Зарегистрироваться
                     </Link>
                 </form>
+                {user.username && user.token && <Redirect to='/' />}
             </div>
         )
     }

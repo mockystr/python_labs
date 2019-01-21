@@ -1,9 +1,11 @@
 import React, { Component, Fragment } from 'react';
 import 'components/App/styles.css';
+import Login from 'components/Login/Login';
+import Register from 'components/Register/Register';
 import Header from 'components/Header/Header';
 import List from 'components/List/List';
 import Detail from 'components/Detail/Detail';
-import Login from 'components/Login/Login';
+import Mine from 'components/Mine/Mine';
 import { Switch, Route } from 'react-router-dom';
 
 class App extends Component {
@@ -12,11 +14,12 @@ class App extends Component {
       <Fragment>
         <Header />
         <Switch>
+          <Route path='/account/register/' component={Register} />
           <Route path='/account/login/' component={Login} />
           <Route path='/account/logout/' component={Login} />
-          
+
           <Route exact path='/' component={List} />
-          <Route path='/mine/' component={List} />
+          <Route path='/mine/' component={Mine} />
           <Route path='/:id/' component={Detail} />
         </Switch>
       </Fragment>

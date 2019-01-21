@@ -23,7 +23,9 @@ const ACTIONS = {
     LOGIN_DATA_LOADED: 'LOGIN_DATA_LOADED',
     LOGIN_ERROR_LOADING: 'LOGIN_ERROR_LOADING',
 
-    LOGOUT_ACTION: 'LOGOUT_ACTION',
+    LOGOUT_START_LOADING: 'LOGOUT_START_LOADING',
+    LOGOUT_DATA_LOADED: 'LOGOUT_DATA_LOADED',
+    LOGOUT_ERROR_LOADING: 'LOGOUT_ERROR_LOADING',
 }
 
 const loginReducer = (state = initialState, action) => {
@@ -34,8 +36,12 @@ const loginReducer = (state = initialState, action) => {
             return { ...state, isLoading: false, user: action.payload };
         case ACTIONS.LOGIN_ERROR_LOADING:
             return { ...state, isLoading: false, ...action.payload };
-        case ACTIONS.LOGOUT_ACTION:
+        case ACTIONS.LOGOUT_START_LOADING:
+            return { ...state, isLoading: true }
+        case ACTIONS.LOGOUT_DATA_LOADED:
             return { isLoading: false, error: '', user: {} };
+        case ACTIONS.LOGOUT_ERROR_LOADING:
+            return { isLoading: false, ...action.payload }
         default:
             return state;
     }
@@ -69,12 +75,21 @@ export const loginUser = (username, password) => async (dispatch) => {
 export const logoutUser = () => async (dispatch) => {
     try {
         dispatch({
-            type: ACTIONS.LOGOUT_ACTION,
+            type: ACTIONS.LOGOUT_START_LOADING,
         })
         cookie.remove('userData', { path: '/' });
         logout();
+
+        dispatch({
+            type: ACTIONS.LOGOUT_DATA_LOADED,
+        })
     } catch (err) {
         console.log(err);
+
+        dispatch({
+            type: ACTIONS.LOGOUT_ERROR_LOADING,
+            payload: { error: err }
+        })
     }
 }
 
