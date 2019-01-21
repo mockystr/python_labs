@@ -12,8 +12,6 @@ class Header extends Component {
 
     render() {
         const userData = store.getState().login;
-        console.log('userData from Header', userData);
-
         return (
             <header>
                 <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -35,7 +33,7 @@ class Header extends Component {
                                                 {userData.user.username}
                                             </NavLink>
                                             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                                <Link className="dropdown-item" to="account/get/">Профиль</Link>
+                                                <Link className="dropdown-item" to={`/account/username/${userData.user.username}/`}>Профиль</Link>
                                                 <Link className="dropdown-item" to="account/edit">Изменить</Link>
                                                 <div className="dropdown-divider"></div>
                                                 <Link className="dropdown-item" to='/account/logout/'>Выйти</Link>

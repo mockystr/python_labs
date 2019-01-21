@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter, Link } from 'react-router-dom';
 import { loadServiceById } from 'components/Detail/reducer';
+import moment from 'moment';
 
 class Detail extends Component {
     componentDidMount() {
@@ -16,12 +17,13 @@ class Detail extends Component {
 
     render() {
         const { isLoading, service } = this.props;
-
+        service.updated = moment(Date.parse(service.updated)).format('DD.MM.YYYY HH:mm')
+        // console.log(moment(service.updated, 'YYYY-MM-DD'))
         return (
             <div>
                 {isLoading ? <p>Загрузка</p> :
                     <div className="container detail-content_block">
-                        <h1>{service.name}</h1>
+                        <h1 className='mt-3'>{service.name}</h1>
                         <p className="text-muted">
                             Заказчик:
                             <Link to={`account/id/${service.customer.id}`}>

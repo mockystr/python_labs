@@ -36,15 +36,12 @@ class Login extends Component {
     render() {
         const { logoutUser, match: { path } } = this.props;
 
-        console.log('path temp', path);
-
         if (path === '/account/logout/') {
             logoutUser();
             return <Redirect to='/account/login/' />;
         }
 
         const { user } = this.props;
-        console.log('USER', user);
 
         return (
             <div className='container mt-5 module-container'>

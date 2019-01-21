@@ -7,7 +7,7 @@ const url = 'http://localhost:8000/';
 export const getServices = (page = 1) => axios.get(`${url}?page=${page}`);
 
 export const getMineServices = (page = 1, token = '') => {
-    console.log('page from api', page, 'token from api', token);
+    // console.log('page from api', page, 'token from api', token);
 
     return axios.get(
         `${url}mine?${page}`,
@@ -23,12 +23,12 @@ export const getMineServices = (page = 1, token = '') => {
 export const getServiceById = (id) => axios.get(`${url}${id}/`);
 
 export const createServiceById = (token, name, description, photo, price, active) => {
-    console.log('FROM API token', token);
-    console.log('name', name);
-    console.log('description', description);
-    console.log('photo', photo);
-    console.log('price', price);
-    console.log('active', active);
+    // console.log('FROM API token', token);
+    // console.log('name', name);
+    // console.log('description', description);
+    // console.log('photo', photo);
+    // console.log('price', price);
+    // console.log('active', active);
 
     return axios.post(
         `${url}create/`,
